@@ -1,0 +1,6 @@
+argparse
+cowin
+discord.py
+python-dotenv
+argparse
+

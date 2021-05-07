@@ -1,0 +1,65 @@
+import requests
+import json
+from datetime import date
+
+today = date.today()
+
+URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id="
+
+districtID = 269
+dateNeeded = today.strftime("%d-%m-%Y")
+
+
+class vaccine_center(dict):
+    def __init__(self, name, address, block_name, fee_type, available_capacity, vaccine, date):
+        self.name = name
+        self.address = address
+        self.block_name = block_name
+        self.fee_type = fee_type
+        self.available_capacity = available_capacity
+        self.vaccine = vaccine
+        self.date = date
+        # self.slots = slots
+
+    def asdict(self):
+        return {'name': self.name, 'address': self.address, 'block_name': self.block_name, 'fee_type': self.fee_type, 'available_capacity': self.available_capacity, 'vaccine': self.vaccine, 'date': self.date}
+
+    def __getattr__(self, attr):
+        return self[attr]
+
+
+class APIError(Exception):
+    """An API Error Exception"""
+
+    def __init__(self, status):
+        self.status = status
+
+    def __str__(self):
+        return "APIError: status={}".format(self.status)
+
+
+class cowinAPI:
+    def call_api(self):
+        url = URL+str(districtID)+'&date='+str(dateNeeded)
+        header = {"accept": "application/json"}
+        filtered_centers = {'centers': []}
+        resp = requests.get(url, headers=header)
+        available_centers = json.loads(resp.text)
+        if resp.status_code != 200:
+            # This means something went wrong.
+            raise APIError(resp.status_code)
+        for center in available_centers['centers']:
+            # print(type(center))
+            #center = json.loads(center)
+
+            if center['sessions'][0]['available_capacity'] > 0:
+                # print(center)
+                filtered_center = vaccine_center(
+                    center['name'], center['address'], center['block_name'], center['fee_type'], center['sessions'][0]['available_capacity'], center['sessions'][0]['vaccine'], center['sessions'][0]['date'])
+                # vars(filtered_center)
+                filtered_centers['centers'].append(filtered_center.asdict())
+        return filtered_centers
+
+
+api = cowinAPI()
+print(api.call_api())
