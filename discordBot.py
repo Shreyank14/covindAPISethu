@@ -73,7 +73,7 @@ if __name__ == "__main__":
         else:
             errorChannel = client.get_channel(int(ERROR_CHANNEL))
             await errorChannel.send("The Cowin API is currently not responding. Don't Worry I got your back, I will try again after some time.")
-            time.sleep(300)
+            # time.sleep(90)
 
     @client.event
     async def on_member_join(member):
