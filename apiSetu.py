@@ -46,7 +46,8 @@ class cowinAPI:
     def call_api(self, age, district_id):
         url = URL+str(district_id)+'&date='+str(dateNeeded)
         header = {'accept': 'application/json',
-                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36',
+                  'Content-Type': 'application/json',
+                  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
                   'From': 'shreyankshetty007@gmail.com'}
         filtered_centers = {'centers': []}
         print(url)
