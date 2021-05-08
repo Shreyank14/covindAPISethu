@@ -39,18 +39,21 @@ class APIError(Exception):
         print("APIError: status={}".format(self.status))
         return None
 
+# Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36
+
 
 class cowinAPI:
     def call_api(self, age, district_id):
         url = URL+str(district_id)+'&date='+str(dateNeeded)
         header = {'accept': 'application/json',
-                  'User-Agent': 'My User Agent 1.0',
+                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36',
                   'From': 'shreyankshetty007@gmail.com'}
         filtered_centers = {'centers': []}
         print(url)
         resp = requests.get(url, headers=header)
         if resp.status_code != 200:
             # This means something went wrong.
+            print(resp.text)
             raise APIError(resp.status_code)
 
         else:
