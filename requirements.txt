@@ -1,4 +1,5 @@
 argparse
+requests
 discord.py
 python-dotenv
 argparse
