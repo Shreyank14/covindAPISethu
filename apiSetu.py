@@ -60,11 +60,12 @@ class cowinAPI:
         else:
             available_centers = json.loads(resp.text)
             for center in available_centers['centers']:
-                if (center['sessions'][0]['available_capacity'] > 0) & (center['sessions'][0]['min_age_limit'] >= age):
-                    filtered_center = vaccine_center(
-                        center['name'], center['address'], center['block_name'], center['fee_type'], center['sessions'][0]['available_capacity'], center['sessions'][0]['vaccine'], center['sessions'][0]['date'], center['sessions'][0]['min_age_limit'])
-                    filtered_centers['centers'].append(
-                        filtered_center.asdict())
+                for slot in center['sessions']:
+                    if (slot['available_capacity'] > 0) & (slot['min_age_limit'] == age):
+                        filtered_center = vaccine_center(
+                            center['name'], center['address'], center['block_name'], center['fee_type'], slot['available_capacity'], slot['vaccine'], slot['date'], slot['min_age_limit'])
+                        filtered_centers['centers'].append(
+                            filtered_center.asdict())
             return filtered_centers
 
 
